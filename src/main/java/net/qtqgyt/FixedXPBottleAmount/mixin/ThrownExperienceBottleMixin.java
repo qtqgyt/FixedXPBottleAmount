@@ -1,7 +1,7 @@
 package net.qtqgyt.FixedXPBottleAmount.mixin;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.projectile.ThrownExperienceBottle;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownExperienceBottle;
 import net.minecraft.world.level.Level;
 import net.qtqgyt.FixedXPBottleAmount.FixedXPBottleAmount;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ public class ThrownExperienceBottleMixin {
     private int handler(int i) {
         Level level = ((ThrownExperienceBottle) (Object) this).level();
         if (level instanceof ServerLevel serverLevel) {
-            int fixedBottleXp = serverLevel.getGameRules().getInt(FixedXPBottleAmount.FIXED_BOTTLE_XP);
+            int fixedBottleXp = serverLevel.getGameRules().get(FixedXPBottleAmount.FIXED_BOTTLE_XP);
             if (fixedBottleXp < 0) {
                 return i;
             }
