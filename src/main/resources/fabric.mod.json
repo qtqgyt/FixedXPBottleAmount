@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "fixed-xp-bottle-amount",
+  "version": "${version}",
+  "name": "FixedXPBottleAmount",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "GPL-3.0",
+  "icon": "assets/fixed-xp-bottle-amount/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "net.qtqgyt.FixedXPBottleAmount.client.FixedXPBottleAmountDataGenerator"
+    ],
+    "client": [
+      "net.qtqgyt.FixedXPBottleAmount.client.FixedXPBottleAmountClient"
+    ],
+    "main": [
+      "net.qtqgyt.FixedXPBottleAmount.FixedXPBottleAmount"
+    ]
+  },
+  "mixins": [
+    "fixed-xp-bottle-amount.mixins.json",
+    {
+      "config": "fixed-xp-bottle-amount.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
