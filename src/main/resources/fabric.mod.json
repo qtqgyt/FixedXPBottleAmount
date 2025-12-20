@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "fixed-xp-bottle-amount",
+  "id": "${mod_id}",
   "version": "${version}",
-  "name": "FixedXPBottleAmount",
+  "name": "${mod_name}",
   "description": "",
   "authors": [],
   "contact": {},
