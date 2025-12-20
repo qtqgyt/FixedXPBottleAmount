@@ -1,8 +1,15 @@
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+
+val modVersion = DateTimeFormatter.ofPattern("yyyyMMdd").format(Instant.now().atZone(ZoneOffset.UTC))
+
 plugins {
     id("fabric-loom")
+    id("me.modmuss50.mod-publish-plugin") version "1.1.0"
 }
 
-version = "${property("mod.version")}+${stonecutter.current.version}"
+version = "${modVersion}+${stonecutter.current.version}"
 base.archivesName = property("mod.id") as String
 
 val requiredJava = when {
@@ -53,7 +60,7 @@ tasks {
             expand(
                 "mod_id" to project.property("mod.id").toString(),
                 "mod_name" to project.property("mod.name").toString(),
-                "version" to project.property("mod.version").toString(),
+                "version" to version,
                 "minecraft_version" to stonecutter.current.version,
                 "loader_version" to project.property("deps.fabric_loader").toString()
             )
@@ -62,7 +69,29 @@ tasks {
     register<Copy>("buildAndCollect") {
         group = "build"
         from(remapJar.map { it.archiveFile }, remapSourcesJar.map { it.archiveFile })
-        into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
+        into(rootProject.layout.buildDirectory.file("libs/${modVersion}"))
         dependsOn("build")
+    }
+}
+
+publishMods {
+    file = tasks.remapJar.map { it.archiveFile.get() }
+    additionalFiles.from(tasks.remapSourcesJar.map { it.archiveFile.get() })
+    displayName = "${property("mod.name")} ${modVersion} [${stonecutter.current.version}]"
+    version = "${modVersion}+${stonecutter.current.version}"
+    changelog = "¯\\_(ツ)_/¯"
+    type = STABLE
+    modLoaders.add("fabric")
+
+    dryRun = providers.environmentVariable("MODRINTH_TOKEN").getOrNull() == null
+
+    modrinth {
+        projectId = property("publish.modrinth") as String
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        minecraftVersions.addAll(property("mod.targets").toString().split(' '))
+        requires {
+            slug = "fabric-api"
+            version = property("deps.fabric_api").toString()
+        }
     }
 }
