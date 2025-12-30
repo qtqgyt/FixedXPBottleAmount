@@ -79,7 +79,7 @@ publishMods {
     additionalFiles.from(tasks.remapSourcesJar.map { it.archiveFile.get() })
     displayName = "${property("mod.name")} ${modVersion} [${stonecutter.current.version}]"
     version = "${modVersion}+${stonecutter.current.version}"
-    changelog = "¯\\_(ツ)_/¯"
+    changelog = ""
     type = STABLE
     modLoaders.add("fabric")
 
