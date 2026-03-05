@@ -5,7 +5,8 @@ import java.time.format.DateTimeFormatter
 val modVersion = DateTimeFormatter.ofPattern("yyyyMMdd").format(Instant.now().atZone(ZoneOffset.UTC))
 
 plugins {
-    id("fabric-loom")
+    id("net.fabricmc.fabric-loom") version "1.15-SNAPSHOT"
+
     id("me.modmuss50.mod-publish-plugin") version "1.1.0"
 }
 
@@ -43,9 +44,8 @@ loom {
 
 dependencies {
     minecraft("com.mojang:minecraft:${stonecutter.current.version}")
-    mappings(loom.officialMojangMappings())
-    modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
+    implementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
+    implementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
 }
 
 java {
@@ -68,15 +68,14 @@ tasks {
     }
     register<Copy>("buildAndCollect") {
         group = "build"
-        from(remapJar.map { it.archiveFile }, remapSourcesJar.map { it.archiveFile })
+        from(jar.map { it.archiveFile })
         into(rootProject.layout.buildDirectory.file("libs/${modVersion}"))
         dependsOn("build")
     }
 }
 
 publishMods {
-    file = tasks.remapJar.map { it.archiveFile.get() }
-    additionalFiles.from(tasks.remapSourcesJar.map { it.archiveFile.get() })
+    file = tasks.jar.map { it.archiveFile.get() }
     displayName = "${property("mod.name")} ${modVersion} [${stonecutter.current.version}]"
     version = "${modVersion}+${stonecutter.current.version}"
     changelog = ""
