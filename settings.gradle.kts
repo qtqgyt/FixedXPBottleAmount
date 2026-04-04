@@ -15,7 +15,8 @@ rootProject.name = "FixedXPBottleAmount"
 stonecutter {
     create(rootProject) {
         versions(
-            "26.1-snapshot-11"
+            "26.1",
+            "26.1.1"
         )
     }
 }
