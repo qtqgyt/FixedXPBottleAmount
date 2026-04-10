@@ -16,7 +16,8 @@ stonecutter {
     create(rootProject) {
         versions(
             "26.1",
-            "26.1.1"
+            "26.1.1",
+            "26.1.2"
         )
     }
 }
