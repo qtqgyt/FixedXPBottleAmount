@@ -1,8 +1,3 @@
-import java.time.Instant
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-
-val modVersion = DateTimeFormatter.ofPattern("yyyyMMdd").format(Instant.now().atZone(ZoneOffset.UTC))
 
 plugins {
     id("net.fabricmc.fabric-loom") version "1.15-SNAPSHOT"
@@ -10,7 +5,7 @@ plugins {
     id("me.modmuss50.mod-publish-plugin") version "1.1.0"
 }
 
-version = "${modVersion}+${stonecutter.current.version}"
+version = "${property("mod.version")}+${stonecutter.current.version}"
 base.archivesName = property("mod.id") as String
 
 val requiredJava = when {
@@ -69,15 +64,15 @@ tasks {
     register<Copy>("buildAndCollect") {
         group = "build"
         from(jar.map { it.archiveFile })
-        into(rootProject.layout.buildDirectory.file("libs/${modVersion}"))
+        into(rootProject.layout.buildDirectory.file("libs/${property("mod.version")}"))
         dependsOn("build")
     }
 }
 
 publishMods {
     file = tasks.jar.map { it.archiveFile.get() }
-    displayName = "${property("mod.name")} ${modVersion} [${stonecutter.current.version}]"
-    version = "${modVersion}+${stonecutter.current.version}"
+    displayName = "${property("mod.name")} ${property("mod.version")} [${stonecutter.current.version}]"
+    version = "${property("mod.version")}+${stonecutter.current.version}"
     changelog = ""
     type = STABLE
     modLoaders.add("fabric")
